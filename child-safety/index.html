@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Feedback</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background: #f5f6fa;
+
+            font-family: Arial, sans-serif;
+
+            color: #222;
+
+        }
+
+
+        .container {
+
+            padding: 18px 15px 30px;
+
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .title {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            color: #222;
+
+            margin-bottom: 7px;
+
+        }
+
+
+
+
+        .subtitle {
+
+            font-size: 14px;
+
+            color: #888;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 18px;
+
+            margin-bottom: 15px;
+
+            box-shadow:
+                0 5px 20px #0001;
+
+        }
+
+
+        .label {
+
+            display: block;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* =========================
+           TYPE
+        ========================= */
+
+        .types {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+        }
+
+
+        .type {
+
+            border: 2px solid #eee;
+
+            background: #fafafa;
+
+            border-radius: 13px;
+
+            padding: 12px 8px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            color: #555;
+
+            transition: .15s;
+
+        }
+
+
+        .type.selected {
+
+            border-color: #FF0084;
+
+            background: #FFCDE7;
+
+            color: #333;
+
+            font-weight: bold;
+
+        }
+
+
+        .type:active {
+
+            transform: scale(.96);
+
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        textarea {
+
+            width: 100%;
+
+            min-height: 140px;
+
+            resize: none;
+
+            border: 2px solid #eee;
+
+            border-radius: 15px;
+
+            padding: 13px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+
+            outline: none;
+
+            color: #333;
+
+            background: #fafafa;
+
+        }
+
+
+        textarea:focus {
+
+            border-color: #FF0084;
+
+            background: white;
+
+        }
+
+
+        .counter {
+
+            text-align: left;
+
+            color: #FF0084;
+
+            font-size: 11px;
+
+            margin-top: 6px;
+
+        }
+
+
+        /* =========================
+           RATING
+        ========================= */
+
+        .rating {
+
+            display: flex;
+
+            justify-content: center;
+
+            direction: ltr;
+
+            gap: 8px;
+
+            margin-top: 5px;
+
+        }
+
+
+        .star {
+
+            font-size: 35px;
+
+            color: #ddd;
+
+            cursor: pointer;
+
+            transition: .15s;
+
+        }
+
+
+        .star.active {
+
+            color: #FF0084;
+
+        }
+
+
+        .star:active {
+
+            transform: scale(.9);
+
+        }
+
+
+        .rating-text {
+
+            text-align: center;
+
+            font-size: 13px;
+
+            color: #888;
+
+            margin-top: 8px;
+
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .send-button {
+
+            width: 100%;
+
+            border: 0;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #FF0084,
+                    #6800CF
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 15px #EFA17D55;
+
+        }
+
+
+        .send-button:active {
+
+            transform: scale(.98);
+
+        }
+
+
+        .send-button:disabled {
+
+            opacity: .6;
+
+            cursor: default;
+
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+
+            display: none;
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .success {
+
+            background: #eaf8f0;
+
+            color: #16834a;
+
+        }
+
+
+        .error {
+
+            background: #fff0f0;
+
+            color: #d33;
+
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+
+            display: inline-block;
+
+            width: 18px;
+
+            height: 18px;
+
+            border: 2px solid #ffffff66;
+
+            border-top:
+                2px solid white;
+
+            border-radius: 50%;
+
+            animation:
+                spin .7s linear infinite;
+
+            vertical-align: middle;
+
+            margin-left: 7px;
+
+        }
+
+
+        @keyframes spin {
+
+            100% {
+
+                transform:
+                    rotate(360deg);
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="subtitle">
+
+            <div data-string="feedback1"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+            id="successMessage"
+            class="message success">
+
+        تم إرسال ملاحظتك بنجاح
+
+    </div>
+
+
+    <div
+            id="errorMessage"
+            class="message error">
+
+        حدث خطأ، حاول مرة أخرى.
+
+    </div>
+
+
+    <!-- TYPE -->
+
+    <div class="card">
+
+        <label class="label">
+
+            <div data-string="feedback2"></div>
+
+        </label>
+
+
+        <div class="types">
+
+
+            <div
+                    class="type selected"
+                    onclick="selectType(this, 'suggestion')">
+
+                <div data-string="feedback7"></div>
+
+            </div>
+
+
+            <div
+                    class="type"
+                    onclick="selectType(this, 'problime recharge')">
+
+                <div data-string="feedback5"></div>
+
+            </div>
+
+
+            <div
+                    class="type"
+                    onclick="selectType(this, 'application')">
+
+                <div data-string="feedback6"></div>
+
+            </div>
+
+
+            <div
+                    class="type"
+                    onclick="selectType(this, 'Other')">
+
+                <div data-string="feedback8"></div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div class="card">
+
+        <label class="label">
+
+            <div data-string="feedback3"></div>
+
+        </label>
+
+
+        <textarea
+                id="feedbackText"
+                maxlength="1000"
+                placeholder="..."></textarea>
+
+
+        <div
+                id="counter"
+                class="counter">
+
+            0 / 1000
+
+        </div>
+
+    </div>
+
+
+    <!-- RATING -->
+
+    <div class="card">
+
+        <label class="label">
+
+            <div data-string="feedback9"></div>
+
+        </label>
+
+
+        <div class="rating">
+
+
+            <span
+                    class="star"
+                    onclick="setRating(1)">
+
+                ★
+
+            </span>
+
+
+            <span
+                    class="star"
+                    onclick="setRating(2)">
+
+                ★
+
+            </span>
+
+
+            <span
+                    class="star"
+                    onclick="setRating(3)">
+
+                ★
+
+            </span>
+
+
+            <span
+                    class="star"
+                    onclick="setRating(4)">
+
+                ★
+
+            </span>
+
+
+            <span
+                    class="star"
+                    onclick="setRating(5)">
+
+                ★
+
+            </span>
+
+
+        </div>
+
+
+        <div
+                id="ratingText"
+                class="rating-text">
+
+            اختر تقييمك
+
+        </div>
+
+    </div>
+
+
+    <!-- SEND -->
+
+    <button
+            id="sendButton"
+            class="send-button"
+            onclick="sendFeedback()">
+
+        <div data-string="feedback4"></div>
+
+    </button>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let selectedType = "اقتراح";
+
+let selectedRating = 0;
+
+let currentUid = "";
+
+
+/* =====================================================
+   ANDROID → HTML
+===================================================== */
+
+/*
+   من Java يمكنك استدعاء:
+
+   webView.evaluateJavascript(
+       "setUserUid('" + uid + "')",
+       null
+   );
+*/
+
+function setUserUid(uid) {
+
+    currentUid =
+        String(uid || "");
+
+}
+
+
+/* =====================================================
+   SELECT TYPE
+===================================================== */
+
+function selectType(element, type) {
+
+    document
+        .querySelectorAll(".type")
+        .forEach(function(item) {
+
+            item.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    element.classList.add(
+        "selected"
+    );
+
+
+    selectedType = type;
+
+}
+
+
+/* =====================================================
+   MESSAGE COUNTER
+===================================================== */
+
+document
+    .getElementById("feedbackText")
+    .addEventListener(
+        "input",
+        function() {
+
+            document
+                .getElementById("counter")
+                .innerText =
+                this.value.length +
+                " / 1000";
+
+        }
+    );
+
+
+/* =====================================================
+   RATING
+===================================================== */
+
+function setRating(rating) {
+
+    selectedRating = rating;
+
+
+    const stars =
+        document.querySelectorAll(
+            ".star"
+        );
+
+
+    stars.forEach(
+        function(star, index) {
+
+            if (
+                index < rating
+            ) {
+
+                star.classList.add(
+                    "active"
+                );
+
+            } else {
+
+                star.classList.remove(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+    const texts = {
+
+        1: "سيئة جداً",
+
+        2: "سيئة",
+
+        3: "جيدة",
+
+        4: "جيدة جداً",
+
+        5: "ممتازة ❤️"
+
+    };
+
+
+    document
+        .getElementById("ratingText")
+        .innerText =
+        texts[rating];
+
+}
+
+
+/* =====================================================
+   SEND FEEDBACK
+===================================================== */
+
+function sendFeedback() {
+
+    const text =
+        document
+            .getElementById(
+                "feedbackText"
+            )
+            .value
+            .trim();
+
+
+    /* CHECK MESSAGE */
+
+    if (!text) {
+
+        showError(
+            "اكتب ملاحظتك أولاً."
+        );
+
+        return;
+
+    }
+
+
+    if (text.length < 5) {
+
+        showError(
+            "اكتب ملاحظة أطول قليلاً."
+        );
+
+        return;
+
+    }
+
+
+    /* CHECK RATING */
+
+    if (selectedRating === 0) {
+
+        showError(
+            "اختر تقييمك للتطبيق."
+        );
+
+        return;
+
+    }
+
+
+    /* DISABLE BUTTON */
+
+    const button =
+        document.getElementById(
+            "sendButton"
+        );
+
+
+    button.disabled = true;
+
+
+    button.innerHTML = `
+
+        <span class="loading"></span>
+
+        جاري الإرسال...
+
+    `;
+
+
+    /* =================================================
+       FIREBASE
+    ================================================= */
+
+    const feedbackId =
+        "feedback_" +
+        Date.now();
+
+
+    const data = {
+
+        uid:
+            currentUid || "unknown",
+
+        type:
+            selectedType,
+
+        message:
+            text,
+
+        rating:
+            selectedRating,
+
+        status:
+            "pending",
+
+        timestamp:
+            Date.now()
+
+    };
+
+
+    const url =
+        "https://kivo-live-default-rtdb.firebaseio.com/FEEDBACK/" +
+        feedbackId +
+        ".json";
+
+
+    fetch(
+        url,
+        {
+
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json"
+
+            },
+
+            body:
+                JSON.stringify(data)
+
+        }
+
+    )
+
+    .then(
+        function(response) {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Firebase error"
+                );
+
+            }
+
+            return response.json();
+
+        }
+
+    )
+
+    .then(
+        function() {
+
+            showSuccess();
+
+            resetForm();
+
+        }
+
+    )
+
+    .catch(
+        function(error) {
+
+            console.error(
+                error
+            );
+
+            showError(
+                "تعذر إرسال الملاحظة. تحقق من الإنترنت."
+            );
+
+        }
+
+    )
+
+    .finally(
+        function() {
+
+            button.disabled =
+                false;
+
+            button.innerText =
+                "إرسال الملاحظة";
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   SUCCESS
+===================================================== */
+
+function showSuccess() {
+
+    const success =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    error.style.display =
+        "none";
+
+
+    success.style.display =
+        "block";
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+
+    setTimeout(
+        function() {
+
+            success.style.display =
+                "none";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(message) {
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    const success =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    success.style.display =
+        "none";
+
+
+    error.innerText =
+        message;
+
+
+    error.style.display =
+        "block";
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+
+    setTimeout(
+        function() {
+
+            error.style.display =
+                "none";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetForm() {
+
+    document
+        .getElementById(
+            "feedbackText"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "counter"
+        )
+        .innerText =
+        "0 / 1000";
+
+
+    selectedRating = 0;
+
+
+    document
+        .querySelectorAll(
+            ".star"
+        )
+        .forEach(
+            function(star) {
+
+                star.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "ratingText"
+        )
+        .innerText =
+        "اختر تقييمك";
+
+}
+
+</script>
+
+<!-- =====================================================
+     STRINGS
+===================================================== -->
+
+<script src="strings.js"></script>
+
+
+<script>
+
+const lang =
+    navigator.language
+        .split("-")[0];
+
+
+if (
+    typeof strings !== "undefined"
+) {
+
+    document
+        .querySelectorAll(
+            "[data-string]"
+        )
+        .forEach(element => {
+
+
+            const key =
+                element.getAttribute(
+                    "data-string"
+                );
+
+
+            if (
+                strings[lang] &&
+                strings[lang][key]
+            ) {
+
+                element.textContent =
+                    strings[lang][key];
+
+            }
+
+            else if (
+                strings.en &&
+                strings.en[key]
+            ) {
+
+                element.textContent =
+                    strings.en[key];
+
+            }
+
+        });
+
+}
+
+</script>
+
+</body>
+
+</html>
